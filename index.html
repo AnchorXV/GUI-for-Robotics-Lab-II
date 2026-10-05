@@ -1,80 +1,170 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AutoStack Challenge – Operator Dashboard</title>
+  <title>AutoStack Operator Dashboard</title>
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
 </head>
 <body>
+  <div id="dq-banner" class="dq-banner" hidden>
+    <strong>DISQUALIFIED</strong>
+    <span>All robot controls locked</span>
+    <button id="btn-reset-match" type="button">Reset Match</button>
+  </div>
+
   <header class="app-header">
-    <div class="brand">AutoStack Challenge</div>
-    <div class="robot-select" role="group" aria-label="Pilih robot">
-      <button data-robot="hijau" class="robot-btn robot-hijau">Hijau</button>
-      <button data-robot="biru" class="robot-btn robot-biru">Biru</button>
-      <button data-robot="merah" class="robot-btn robot-merah">Merah</button>
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span>AutoStack Operator</div>
+    <div class="team-block">
+      <span id="team-color-bar" class="team-bar" aria-hidden="true"></span>
+      <span class="label">Team:</span>
+      <span id="team-name">Team Name</span>
     </div>
-    <div class="status" id="wifi-status">WiFi: —</div>
-    <div class="mode-indicator" id="mode-indicator">Mock</div>
+    <div class="phase-select" role="group" aria-label="Phase">
+      <button id="btn-phase-a" type="button">Phase A · Autonomous</button>
+      <button id="btn-phase-b" type="button">Phase B · Stacking</button>
+    </div>
+    <div class="header-meta">
+      <span id="wifi-status" class="wifi"><span class="dot" aria-hidden="true"></span><span id="wifi-text">CH — · — dBm</span></span>
+      <span id="mode-badge" class="badge">MOCK</span>
+      <span id="clock" class="clock">--:--:-- WIB</span>
+    </div>
   </header>
 
   <main class="grid">
-    <section class="panel video-panel">
-      <h2>Video (ESP32-CAM)</h2>
+    <section class="panel video-panel" aria-label="Camera feed">
+      <div class="panel-head">
+        <span>Primary camera feed [4:3]</span>
+        <span id="robot-tag" class="tag">Robot</span>
+      </div>
       <div class="video-wrap">
         <canvas id="video-canvas" width="640" height="480"></canvas>
+        <div id="blind-zone-bar" class="blind-zone">
+          <span><span id="blind-zone-dot" class="dot" aria-hidden="true"></span><span id="blind-zone-text">Blind zone clear</span></span>
+          <span class="label">Safety sensors</span>
+        </div>
       </div>
     </section>
 
-    <section class="panel telemetry-panel">
-      <h2>Telemetri</h2>
+    <section class="panel telemetry-panel" aria-label="Telemetry">
+      <div class="panel-head">
+        <span>Robot telemetry</span>
+        <span id="telemetry-stale-badge" class="badge danger" hidden>Stale</span>
+      </div>
       <dl class="telemetry-list">
-        <dt>Odometri (x, y, θ)</dt><dd id="odo">—</dd>
-        <dt>Baterai</dt><dd id="battery">—</dd>
+        <dt>Odometry x, y, θ</dt><dd id="odo">—</dd>
+        <dt>Battery</dt><dd><span id="battery">—</span><span class="bar"><span id="battery-fill"></span></span></dd>
         <dt>Latency</dt><dd id="latency">—</dd>
-        <dt>Lift / Gripper</dt><dd id="servo">—</dd>
+        <dt>Lift state</dt><dd id="lift-state">—</dd>
+        <dt>Gripper state</dt><dd id="gripper-state">—</dd>
       </dl>
     </section>
 
-    <section class="panel control-panel">
-      <h2>Kontrol</h2>
-      <div class="phase-select">
-        <button data-phase="A" class="phase-btn active">Fase A · Otonom</button>
-        <button data-phase="B" class="phase-btn">Fase B · Stacking</button>
+    <section class="panel control-panel" aria-label="Controls">
+      <div class="panel-head">
+        <span>Differential drive &amp; manipulator</span>
+        <span id="out-of-base-badge" class="badge warn" hidden>Out of base: drive disabled</span>
+        <span class="hint">Keyboard: W A S D · Space stop · Q E lift</span>
       </div>
-      <div class="dpad">
-        <button data-cmd="forward">▲</button>
-        <button data-cmd="left">◀</button>
-        <button data-cmd="stop">■</button>
-        <button data-cmd="right">▶</button>
-        <button data-cmd="backward">▼</button>
-      </div>
-      <div class="actuator-row">
-        <button data-cmd="lift_up">Lift ↑</button>
-        <button data-cmd="lift_down">Lift ↓</button>
-        <button data-cmd="grip_open">Buka</button>
-        <button data-cmd="grip_close">Tutup</button>
+      <div class="controls-body">
+        <div class="dpad-wrap">
+          <span class="label">Drive direction</span>
+          <div class="dpad">
+            <button type="button" data-cmd="forward" aria-label="Forward">▲</button>
+            <button type="button" data-cmd="left" aria-label="Left">◀</button>
+            <button type="button" data-cmd="stop" class="stop" aria-label="Stop">Stop</button>
+            <button type="button" data-cmd="right" aria-label="Right">▶</button>
+            <button type="button" data-cmd="backward" aria-label="Backward">▼</button>
+          </div>
+        </div>
+        <div class="actuator-wrap">
+          <span class="label">Actuator override</span>
+          <div class="actuator-row">
+            <button type="button" data-cmd="lift_up">Lift Up</button>
+            <button type="button" data-cmd="lift_down">Lift Down</button>
+            <button type="button" data-cmd="grip_open">Gripper Open</button>
+            <button type="button" data-cmd="grip_close">Gripper Close</button>
+          </div>
+          <div class="mode-row">
+            <span class="label">Operation mode:</span>
+            <button id="btn-mode-manual" type="button">Manual</button>
+            <button id="btn-mode-auto" type="button" title="Not available in Phase B">Autonomous</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="panel score-panel">
-      <h2>Skor & Timer</h2>
-      <div class="timer" id="timer">04:00</div>
-      <div class="score" id="score">0</div>
-      <div class="counters">
-        <span>Dibawa: <strong id="carried">0</strong>/3</span>
-        <span>Tumpukan: <strong id="stack">0</strong>/5</span>
+    <section class="panel score-panel" aria-label="Timer and scoring">
+      <div class="panel-head"><span>Match timer &amp; scoring</span></div>
+      <div class="target-row">
+        <span class="label" id="target-label">Target: not set</span>
+        <span class="target-buttons" role="group" aria-label="Target colour">
+          <button type="button" data-target="red">Red</button>
+          <button type="button" data-target="green">Green</button>
+          <button type="button" data-target="blue">Blue</button>
+        </span>
       </div>
-      <button id="btn-penalty" class="danger">Catat Pelanggaran</button>
+      <div class="timer-block">
+        <span class="label">Match clock countdown</span>
+        <div id="timer" class="timer">04:00</div>
+        <div class="timer-row">
+          <button id="btn-start" type="button">Start</button>
+          <button id="btn-pause" type="button">Pause</button>
+          <button id="btn-reset" type="button">Reset</button>
+        </div>
+      </div>
+      <div class="score-grid">
+        <div class="score-cell">
+          <span class="label">Team score</span>
+          <div id="team-score" class="score">0</div>
+          <div id="phase-subscores" class="sub">Phase A 0 · Phase B 0</div>
+        </div>
+        <div class="score-cell">
+          <span class="label">Hold 10 s</span>
+          <div id="hold-text" class="hold-text">0.0 / 10 s</div>
+          <span class="bar"><span id="hold-fill"></span></span>
+        </div>
+        <div class="score-cell">
+          <span class="label">Carried cubes</span>
+          <div class="counter"><span id="carry-count">0 / 3</span>
+            <button id="carry-minus" type="button" aria-label="Remove last cube">−</button>
+            <button type="button" data-cube="red" aria-label="Carry red cube">Red</button>
+            <button type="button" data-cube="green" aria-label="Carry green cube">Green</button>
+            <button type="button" data-cube="blue" aria-label="Carry blue cube">Blue</button>
+          </div>
+          <button id="btn-deposit" type="button">Deposit</button>
+        </div>
+        <div class="score-cell">
+          <span class="label">Stack cubes</span>
+          <div class="counter"><span id="stack-count">0 / 5</span>
+            <button id="stack-minus" type="button" aria-label="Stack minus">−</button>
+            <button id="stack-plus" type="button" aria-label="Stack plus">+</button>
+          </div>
+        </div>
+      </div>
+      <button id="btn-violation" type="button" class="danger-outline">Log Violation</button>
     </section>
 
-    <section class="panel log-panel">
-      <h2>Log Event</h2>
-      <ul id="log"></ul>
+    <section class="panel log-panel" aria-label="Event log">
+      <div class="panel-head">
+        <span>System event log</span>
+        <button id="btn-export-log" type="button">Export log</button>
+      </div>
+      <ul id="log-list"></ul>
     </section>
   </main>
+
+  <dialog id="violation-dialog" aria-labelledby="violation-title">
+    <h2 id="violation-title">Log Violation</h2>
+    <button type="button" data-penalty="OTHER_BASE">Robot enters other team's base <b>(−50)</b></button>
+    <button type="button" data-penalty="BLOCK_OPPONENT_OVER_5S">Blocks opponent over 5 s <b>(−50)</b></button>
+    <button type="button" data-penalty="DELIBERATE_RAM">Rams opponent deliberately <b>(−80)</b></button>
+    <button type="button" data-penalty="OPERATOR_LOOKS_ARENA">Operator looks at arena in Phase B <b id="look-points">(warning)</b></button>
+    <button type="button" id="btn-disqualify" class="danger-solid">Uses extra vision apparatus <b>(Disqualify)</b></button>
+    <button type="button" data-close>Cancel</button>
+  </dialog>
 
   <script type="module" src="js/main.js"></script>
 </body>

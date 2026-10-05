@@ -1,0 +1,66 @@
+/* Design tokens and element defaults (PRD 11). All colours live in :root. */
+:root {
+  --c-bg: #f4f6f8;
+  --c-panel: #fff;
+  --c-inset: #edf1f5;
+  --c-border: #d9dee5;
+  --c-text: #1b2a4a;
+  --c-muted: #4b5563;
+  --c-green: #2a9d4b;
+  --c-blue: #1f6feb;
+  --c-red: #d62828;
+  --c-warn: #e0a100;
+  --c-danger: #b42318;
+  --c-video: #0e1524;
+  --radius: 8px;
+  --mono: ui-monospace, Consolas, Menlo, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 1280px;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 12px;
+}
+
+h2 { font-size: 1rem; margin: 0; }
+
+button {
+  font: inherit;
+  color: var(--c-text);
+  background: var(--c-panel);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  min-height: 44px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) { background: var(--c-inset); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 2px; }
+button.active { background: var(--c-text); color: #fff; border-color: var(--c-text); }
+
+[hidden] { display: none !important; }
+
+.label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+/* Accent follows the drawn match target; neutral grey until the operator picks one. */
+.team-bar:not([data-color]), .tag:not([data-color]) { background: #9aa3b2; }
+.team-bar[data-color="green"], .tag[data-color="green"] { background: var(--c-green); }
+.team-bar[data-color="blue"], .tag[data-color="blue"] { background: var(--c-blue); }
+.team-bar[data-color="red"], .tag[data-color="red"] { background: var(--c-red); }

@@ -6,11 +6,11 @@ Saat ini repositori ini berisi antarmuka front-end saja. Robot dan firmware-nya 
 
 ## Fitur
 
-- Pemilihan robot (hijau, biru, merah) dan fase (A: koleksi otonom, B: stacking teleoperasi).
-- Panel video untuk feed ESP32-CAM, termasuk tempat overlay deteksi warna dan indikator blind zone.
+- Satu tim, satu robot. Identitas tim dari `TEAM_NAME` di `js/config.js`; aksen warna mengikuti target undian.
+- Panel video untuk feed ESP32-CAM (placeholder), termasuk indikator blind zone yang mengikuti data telemetri.
 - Panel telemetri: odometri, tegangan baterai, latency, dan kondisi WiFi.
 - Kontrol D-pad, lift, dan gripper. Pada tahap ini perintah hanya dicatat di log.
-- Timer 4 menit per fase, counter kubus dibawa (maks. 3), counter tumpukan (maks. 5), dan indikator penahanan 10 detik.
+- Timer 4 menit per fase, target warna undian per match, counter kubus dibawa per warna (maks. 3), deposit batch dengan bonus tiga kubus satu warna, counter tumpukan (maks. 5), dan indikator penahanan 10 detik.
 - Panel skor sesuai aturan AutoStack Challenge, dengan logika poin yang dipisah agar bisa diuji tanpa DOM.
 - Pencatatan pelanggaran dan log event untuk kebutuhan laporan.
 
@@ -36,8 +36,8 @@ Pengaturan utama ada di `js/config.js`:
 |---|---|
 | `USE_MOCK` | `true` memakai data simulasi, `false` mencoba sumber data live. |
 | `MOCK_INTERVAL_MS` | Interval pembangkitan data dummy (ms). |
-| `ROBOTS` | Daftar nama robot yang tersedia. |
-| `RULES` | Batas aturan kompetisi (durasi fase, kapasitas, waktu tahan tumpukan). |
+| `TEAM_NAME` | Nama tim yang tampil di header. |
+| `RULES` | Seluruh angka aturan kompetisi (durasi fase, kapasitas, tabel poin, penalti). |
 
 Sumber data live belum diimplementasikan. Saat ini `js/data/live.js` hanya berupa placeholder yang melempar error jika dipanggil.
 
@@ -95,10 +95,10 @@ Format data telemetri contoh ada di `assets/mock/telemetry.json`. Ubah skema ini
 node --test tests/
 ```
 
-Pengujian mencakup logika skor Fase A dan Fase B. Logika tersebut tidak bergantung pada DOM sehingga bisa dijalankan di Node.
+Pengujian mencakup logika skor Fase A dan Fase B. Logika tersebut tidak bergantung pada DOM sehingga bisa dijalankan di Node. Di Windows, jika bentuk direktori gagal, jalankan file-nya langsung: `node --test "tests/scoring.test.js"`.
 
 ## Catatan pengembangan
 
 - Kontrol tombol masih berupa log. Saat bridge tersedia, `data-cmd` akan dikirim sebagai perintah UDP.
-- Stream video belum disambungkan. Canvas saat ini hanya placeholder.
-- Overlay blind zone dan deteksi kubus akan dibuat setelah stream nyata tersedia.
+- Stream video belum disambungkan. Canvas saat ini hanya placeholder dengan teks status.
+- Bar blind zone sudah mengikuti flag `blindZone` dari telemetri (mock membaliknya acak).

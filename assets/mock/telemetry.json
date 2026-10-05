@@ -1,0 +1,12 @@
+{
+  "timestamp": 1730000000000,
+  "phase": "A",
+  "odometry": { "x": 0.0, "y": 0.0, "theta": 0.0 },
+  "battery_v": 11.8,
+  "wifi": { "channel": 6, "rssi": -58, "latency_ms": 42 },
+  "servo": { "lift": "down", "gripper": "open" },
+  "blindZone": false,
+  "outOfBase": false,
+  "cubes_carried": 0,
+  "stack_height": 0
+}

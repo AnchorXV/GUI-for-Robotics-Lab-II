@@ -1,39 +1,67 @@
+/* Page skeleton (PRD 5). Fixed desktop grid: no vertical scroll at 1920x1080. */
 .app-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.6rem 1.25rem;
   background: var(--c-panel);
-  border-bottom: 1px solid var(--c-border);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
 }
-.brand { font-weight: 700; margin-right: auto; }
+
+.brand { font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.brand-mark { width: 12px; height: 12px; background: var(--c-text); }
+
+.team-block { display: flex; align-items: center; gap: 8px; }
+.team-bar { width: 6px; height: 22px; border-radius: 3px; }
+
+.phase-select { display: flex; gap: 6px; margin: 0 auto; }
+.header-meta { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.clock { font-family: var(--mono); font-weight: 700; font-variant-numeric: tabular-nums; }
 
 .grid {
   display: grid;
-  gap: 1rem;
-  padding: 1rem;
-  grid-template-columns: 1.4fr 1fr;
+  gap: 12px;
+  grid-template-columns: 7fr 5fr;
   grid-template-areas:
     "video telemetry"
     "control score"
     "log log";
 }
-.video-panel     { grid-area: video; }
-.telemetry-panel { grid-area: telemetry; }
-.control-panel   { grid-area: control; }
-.score-panel     { grid-area: score; }
-.log-panel       { grid-area: log; }
 
-/* Tablet & mobile: satu kolom */
-@media (max-width: 900px) {
-  .grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "video"
-      "telemetry"
-      "control"
-      "score"
-      "log";
-  }
+.video-panel { grid-area: video; }
+.telemetry-panel { grid-area: telemetry; }
+.control-panel { grid-area: control; }
+.score-panel { grid-area: score; }
+.log-panel { grid-area: log; }
+
+.controls-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: start;
 }
+
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.dq-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--c-danger);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dq-banner button { background: #fff; color: var(--c-danger); border-color: #fff; font-weight: 700; }
