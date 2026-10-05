@@ -1,0 +1,39 @@
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--c-panel);
+  border-bottom: 1px solid var(--c-border);
+}
+.brand { font-weight: 700; margin-right: auto; }
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-areas:
+    "video telemetry"
+    "control score"
+    "log log";
+}
+.video-panel     { grid-area: video; }
+.telemetry-panel { grid-area: telemetry; }
+.control-panel   { grid-area: control; }
+.score-panel     { grid-area: score; }
+.log-panel       { grid-area: log; }
+
+/* Tablet & mobile: satu kolom */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "video"
+      "telemetry"
+      "control"
+      "score"
+      "log";
+  }
+}

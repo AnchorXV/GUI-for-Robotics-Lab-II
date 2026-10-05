@@ -1,0 +1,47 @@
+# Dependensi (untuk tooling Node seperti serve atau test runner)
+node_modules/
+package-lock.json.bak
+
+# Berkas build dan cache
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+
+# Lingkungan dan kredensial lokal
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Data rekaman sesi robot (jangan masuk repo, besar dan bisa mengandung info lab)
+recordings/
+*.rosbag
+*.csv.local
+
+# Video dan gambar mentah dari ESP32-CAM
+captures/
+*.mjpeg
+*.avi
+
+# Editor dan IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistem operasi
+.DS_Store
+Thumbs.db
+desktop.ini

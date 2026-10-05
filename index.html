@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoStack Challenge – Operator Dashboard</title>
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">AutoStack Challenge</div>
+    <div class="robot-select" role="group" aria-label="Pilih robot">
+      <button data-robot="hijau" class="robot-btn robot-hijau">Hijau</button>
+      <button data-robot="biru" class="robot-btn robot-biru">Biru</button>
+      <button data-robot="merah" class="robot-btn robot-merah">Merah</button>
+    </div>
+    <div class="status" id="wifi-status">WiFi: —</div>
+    <div class="mode-indicator" id="mode-indicator">Mock</div>
+  </header>
+
+  <main class="grid">
+    <section class="panel video-panel">
+      <h2>Video (ESP32-CAM)</h2>
+      <div class="video-wrap">
+        <canvas id="video-canvas" width="640" height="480"></canvas>
+      </div>
+    </section>
+
+    <section class="panel telemetry-panel">
+      <h2>Telemetri</h2>
+      <dl class="telemetry-list">
+        <dt>Odometri (x, y, θ)</dt><dd id="odo">—</dd>
+        <dt>Baterai</dt><dd id="battery">—</dd>
+        <dt>Latency</dt><dd id="latency">—</dd>
+        <dt>Lift / Gripper</dt><dd id="servo">—</dd>
+      </dl>
+    </section>
+
+    <section class="panel control-panel">
+      <h2>Kontrol</h2>
+      <div class="phase-select">
+        <button data-phase="A" class="phase-btn active">Fase A · Otonom</button>
+        <button data-phase="B" class="phase-btn">Fase B · Stacking</button>
+      </div>
+      <div class="dpad">
+        <button data-cmd="forward">▲</button>
+        <button data-cmd="left">◀</button>
+        <button data-cmd="stop">■</button>
+        <button data-cmd="right">▶</button>
+        <button data-cmd="backward">▼</button>
+      </div>
+      <div class="actuator-row">
+        <button data-cmd="lift_up">Lift ↑</button>
+        <button data-cmd="lift_down">Lift ↓</button>
+        <button data-cmd="grip_open">Buka</button>
+        <button data-cmd="grip_close">Tutup</button>
+      </div>
+    </section>
+
+    <section class="panel score-panel">
+      <h2>Skor & Timer</h2>
+      <div class="timer" id="timer">04:00</div>
+      <div class="score" id="score">0</div>
+      <div class="counters">
+        <span>Dibawa: <strong id="carried">0</strong>/3</span>
+        <span>Tumpukan: <strong id="stack">0</strong>/5</span>
+      </div>
+      <button id="btn-penalty" class="danger">Catat Pelanggaran</button>
+    </section>
+
+    <section class="panel log-panel">
+      <h2>Log Event</h2>
+      <ul id="log"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
